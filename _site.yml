@@ -16,3 +16,6 @@ pages:
     - text: "Election Data"
       href: "/docs/ElectionData.html"
       navbar: false
+    - text: "SVICOVID"
+      href: "/docs/SVICOVID.html"
+      navbar: false 

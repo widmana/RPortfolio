@@ -1,0 +1,48 @@
+---
+title: "Election Data"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    collapsed: false
+    number_sections: false
+    toc_depth: 1
+    #code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Introduction
+
+The 2000 US Presidential election of Al Gore versus George W. Bush was a very close competition, coming down to just a few hundred votes. The race came to a fraught and contentious end in the state of Florida, where the weight of America's future leadership fell upon heavily scrutinized county-level votes. In Palm Beach County, Democratic voters disputed ballot results, claiming that a confusing ballot design had caused voters to accidentally vote for Reform Party candidate Pat Buchanan instead of Gore. This report aims to analyze whether Buchanan received more votes than expected in Palm Beach County. We used data from all 67 counties in Florida in order to create a linear model of Bush votes versus Buchanan votes. We then created a 95% prediction interval to predict the number of Buchanan votes expected in Palm Beach County if no anomaly had occurred. 
+
+# Results
+
+In order to create a prediction interval using the data from the other 66 counties, I removed the disputed outlier (Palm Beach County) from the dataset and fit the regression of logged votes for Bush in 2000 against logged votes for Buchanan in 2000. Logging these variables brought the data closer to a linear model. 
+
+```{r, echo = FALSE}
+#EDIT
+```
+
+After taking the disputed outlier (Palm Beach County) out of the dataset and logging the variables, the equation for predicting Buchanan votes from Bush votes per county was: 
+
+$$
+(log(Buchanan2000) | log(Bush2000)) = -2.34149+0.73096 log(Bush2000) 
+$$
+
+with a prediction standard error of 0.4302319. 
+
+With this model, we can use Palm Beach County's number of votes for Bush in 2000 (152846) to predict the number of votes Palm Beach County should have had for Buchanan. After unlogging the y outputs, the predicted number of Florida county-level votes for Buchanan with 152846 votes for Bush in 2000 is 592.368. 
+
+We are 95% confident that a Florida county with 152846 votes for Bush in 2000 will have between 250.800 and 1399.16 votes for Buchanan. 
+
+# Discussion
+
+Our findings found that the observed number of Palm Beach County votes for Buchanan in 2000 rested outside the maximum end of the 95% prediction interval (1399.16) by 2007.84 votes. This indicates that Palm Beach County deviated from the trend of Buchanan and Bush votes in Florida Counties. However, this analysis is limited by the assumption that the relationship between Buchanan and Bush votes in this county is the same as in others in Florida. Other confounding variables outside of ballot design could have affected this deviation. 
+
+```{r, echo = FALSE}
+library(Sleuth3)
+library(ggplot2)
+head(ex0825)
+```

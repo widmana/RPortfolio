@@ -18,12 +18,30 @@ Navigate the projects below by clicking on the project title!
 
 # [Jury Selection](https://widmana.github.io/RPortfolio/JurySelection.html) 
 
-2021 | 8 | 01 Last compiled: `r Sys.Date()`
+2021 | 10 | 01 Last compiled: `r Sys.Date()`
 
 The Jury Selection project created a linear regression model using juror racial data from the 6 trials of Curtis Flowers to determine whether there were racial disparities in the way that lawyers use peremptory strikes.
 
+## Data
+
+Data was taken from....
+
 # [Election Data](https://widmana.github.io/RPortfolio/ElectionData.html) 
 
-2018 | 7 | 23 Last compiled: `r Sys.Date()`
+2021 | 11 | 01 Last compiled: `r Sys.Date()`
 
-The Election Data project created a linear regression model using voting data from 67 Florida counties to determine whether there was an anomaly in the disputed 2000 Presidential Election primary Democratic ballot (Buchanan vs. Gore) in Palm Beach County, synthesized in a seven-page written report.
+The Election Data project created a linear regression model using voting data from 67 Florida counties to determine whether there was an anomaly in the disputed 2000 Presidential Election primary Democratic ballot (Buchanan vs. Gore) in Palm Beach County.
+
+## Data
+
+Data was taken from....
+
+# [SVI and COVID-19](https://widmana.github.io/RPortfolio/SVICOVID.html) 
+
+2021 | 06 | 05 Last compiled: `r Sys.Date()`
+
+The SVI and COVID-19 project used data from 3,142 US counties to test whether the CDC’s Social Vulnerability Index (SVI) is an effective predictor of supply-and demand-related challenges to COVID-19 vaccine coverage (CVAC level of concern).
+
+## Data
+
+Data was taken from....
