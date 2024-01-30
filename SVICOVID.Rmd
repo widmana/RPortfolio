@@ -15,4 +15,127 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Abstract
+
+This paper constructs statistical models to understand the relationship between Social Vulnerability and CVAC
+level of concern for vaccination rollout as well as strength of hesitancy to receive a vaccine in the U.S. Census
+Bureau’s Household Pulse Survey (HPS). The CDC’s Social Vulnerability Index codifies the extent to which a
+community is socially vulnerable to a disaster. We wanted to see if the average estimated percentage of survey
+respondents who were “Strongly hesitant” was different among different categories of Social Vulnerability.
+We also wanted to see if greater social vulnerability is associated with supply-and demand-related challenges
+to the COVID-19 vaccine coverage (CVAC level of concern). In our statistical analyses, we found statistically
+significant evidence that the average estimated percentage of survey respondents who were “Strongly hesitant”
+was different among different categories of Social Vulnerability. We also found statistically significant evidence
+that the Social Vulnerability Index (SVI) is an effective predictor of CVAC level of concern for vaccination
+rollout.
+
 # Introduction
+Since the first case of coronavirus surfaced in a Chinese seafood and poultry market in December of 2019,
+the virus has swept the globe. In countries all over the world, the virus has “upended life and derailed the
+global economy” (Taylor). More than 1.6 million have been killed and more than 76 million have become sick
+due to the coronavirus (Taylor). After over a year of mourning deaths and coping with sickness, adapting to
+economic shutdowns and high unemployment rates, adjusting to life with social distancing and masks, and
+everything in between, Food and Drug Administration (FDA) approval of vaccines is a light at the end of the
+tunnel. As more and more vaccines are produced and becoming available, we wonder how social vulnerability
+plays a role in who gets the vaccine and who is hesitant to do so.
+Using data from a sample of 3,142 counties, we are able to analyze the relationship between social vulnerability
+and strength of hesitancy towards receiving the COVID-19 vaccine as well as CVAC level of concern towards
+vaccination rollout[^1}.1 SVI indicates the relative vulnerability of every U.S. Census tract and it ranks the tracts
+on 15 social factors, including unemployment, minority status, and disability. Each tract receives a ranking
+for each Census variable and for each of the four themes, as well as an overall ranking (ATSDR). In this study, we want to see how the degree of social vulnerability in communities impacts the ability to prevent
+human suffering from the coronavirus.
+In consideration of social vulnerability and receiving the COVID-19 vaccine, this study aims to discover if at
+least two of the SVI categories’ averages estimated strongly hesitant percentages are different. This will be
+tested using the ANOVA test using the following hypotheses:
+(i) H~0~: the average estimated “Strongly hesitant” percentages are similar throughout all SVI Categories vs
+Ha: at least two of the SVI Categories’ average estimated “Strongly hesitant” percentages are different.
+Secondly, this study tests to see if SVI is an effective predictor of CVAC level of concern for vaccination
+rollout using the following hypotheses:
+(ii) H~0~: The population slope is zero (β = 0), Social Vulnerability Index (SVI) is not an effective predictor
+of CVAC level of concern for vaccination rollout vs Ha: The population slope is non-zero (β 6= 0), Social
+Vulnerability Index (SVI) is an effective predictor of CVAC level of concern for vaccination rollout.
+
+[^1]: Data taken from Vaccine Hesitancy for COVID-19. https://kaggle.com/deepshah16/vaccine-hesitancy-for-covid19. Accessed
+6 June 2021.
+
+# Data
+The data used in this dataset was based on 3,142 unique values of counties and was collected from data.gov,
+which collected data from the U.S. Census Bureau’s HPS. The HPS is a 20 minute online survey that studies
+how the coronavirus pandemic is impacting households, individuals, families, and communities across the
+country from a social and economic perspective (US Census Bureau HPS). One of the questions on the HPS
+asks, “Once a vaccine to prevent COVID-19 is available to you, would you get a vaccine?” Five responses
+were available: definitely get a vaccine, probably get a vaccine, unsure, probably not get a vaccine, and
+definitely not get a vaccine (CDC Estimates). Three definitions captured the strength of the hesitancy:
+strongly hesitant (included “definitely not” responses), hesitant (included “probably not” or definitely not”
+responses), and hesitant/unsure (included “probably not,” “unsure,” and “definitely not” responses) (CDC
+Estimates). The Office of Management and Budget (OMB) approved the collection of this study, in which
+the Census Bureau randomly chose addresses, not individuals personally, to participate in this survey.
+Hesitancy rates were measured in two steps. First, hesitancy rates at the state level were measured using the
+HPS for the collection period April 14 2021- April 26, 2021 (CDC Estimates). Then the estimated values were
+used to predict hesitancy rates in more granular areas using the Census Bureau’s 2019 American Community
+Survey (ACS) 1-year Public Use Microdata Sample (PUMS). Secondly, hesitancy rates at the county level
+were estimated using a Public Use Microdata Area (PUMA)-to-county crosswalk from the Missouri Census
+Data Center. “PUMAs spanning multiple counties had their estimates apportioned across those counties
+based on overball 2010 Census populations” (CDC Estimates). This explains how the variables “Estimated
+hesitancy” and “Estimated strongly hesitant” in the dataset were collected.
+The demographic data came from the 2019 ACS 5-year estimates. The ACS is an ongoing survey that
+provides data every year that covers a broad range of topics about social, economic, demographic, and housing
+characteristics of the U.S. population (US Census Bureau 5-Year Data). The multi-year estimate increases
+statistical reliability of the data for less populated areas and small population subgroups. This explains how
+the variables “Percent Hispanic” and “Percent non-Hispanic American Indian/ Alaska Native” in the dataset
+were collected.
+Other variables in this dataset include “County name,” “State,” and “Percent adults fully vaccinated” and
+these came from the CDC Data Tracker. Another variable in the dataset was “SVI” which was obtained from
+the 2018 CDC SVI. SVI indicates the relative vulnerability of every U.S. Census tract, which are subdivisions
+of counties for which the Census collects statistical data. SVI ranks the tracts on 15 social factors, including
+unemployment, minority status, and disability, and further groups them into four related themes. Thus, each
+tract receives a ranking for each Census variable and for each of the four themes, as well as an overall ranking
+(ATSDR).
+Lastly, the “CVAC” variable was measured. The CVAC acknowledges that not every community will face
+the same barriers, thus it narrows down to the county level and shows precisely which barriers each U.S.
+community is likely to face in achieving high vaccine coverage and why (Surgo Venturer). There are five barriers to consider: Historic Undervaccination, Sociodemographic Barriers, Resource-Constrained Healthcare
+System, Healthcare Accessibility Barriers, and Irregular Care Seeking Behavior. The CVAC measures the
+level of concern for a difficult rollout on a range from 0 (lowest concern) to 1 (highest concern). The CVAC
+Index can also be categorized as follows: Very Low (0.0-0.19), Low (0.20-0.39), Moderate (0.40-0.59), High
+(0.60-0.79), or Very High (0.80-1.0) Concern (CDC Estimates).
+
+# Results
+
+For our data, we used a sample of 3,142 different counties to observe how Social Vulnerability is associated
+with with average estimated percentage of “Strongly hesitant” respondents and CVAC level of concern for
+vaccination rollout.
+**Hypothesis (i)** In order to test hypothesis i, we used ANOVA to test the differences in average estimated
+“Strongly hesitant” percentages among Social Vulnerability Categories. For this permutation test, we used
+the α = 0.05 significance level to determine whether to to reject or accept H~0~.
+In the boxplot of SVI Category versus estimated “Strongly hesitant” below, the 5-number summary for Low
+concern is approximately (0.03, 0.07, 0.08, 0.010, 0.014) with a handful of outliers that might be significant.
+The 5-number summary for moderate concern is approximately (0.03, 0.07, 0.08, 0.10, 0.14) with a few
+outliers that probably are not significant. The 5-number summary for moderate concern is approximately
+(0.03, 0.07, 0.08, 0.10, 0.14) with a few outliers that probably are not significant. The 5-number summary
+for very high concern concern is approximately (0.04, 0.08, 0.11, 0.12, 0.17) with one outlier. The 5-number
+summary for very low concern concern is approximately (0.01, 0.06, 0.08, 0.10, 0.15) with a few outliers.
+
+```{r, echo = FALSE}
+#boxplots
+```
+
+Testing for ANOVA:
+
+```{r, echo = FALSE}
+#ANOVA test visual
+```
+
+Both the normality condition and the equal variance condition are met.
+
+```{r, echo = FALSE}
+#ANOVA test
+```
+
+The p-value is <2e-16, so using α = 0.05, we have statistically significant evidence that atleast two of the
+SVI Categories’ average estimated strongly hesitant percentage are different. The Tukey HSD test showed
+that there are statistically significantly differences in the average proportion of “Estimated Strongly Hesitant”
+respondents between all but three pairs; Moderate Concern and Low Concern, Very Low Concern and Low
+Concern, and Very Low Concern and Moderate Concern.
+**Hypothesis (ii)** In order to test hypothesis ii, we used an inference for regression to test whether the ocial
+Vulnerability Index (SVI) is an effective predictor of CVAC level of concern for vaccination rollout. For this
+permutation test, we used the α = 0.05 significance level to determine whether to to reject or accept H~0~.

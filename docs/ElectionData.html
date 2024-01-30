@@ -324,9 +324,6 @@ div.tocify {
 <li>
   <a href="Projects.html">Projects</a>
 </li>
-<li>
-  <a href="Links.html">Links</a>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -367,6 +364,7 @@ other 66 counties, I removed the disputed outlier (Palm Beach County)
 from the dataset and fit the regression of logged votes for Bush in 2000
 against logged votes for Buchanan in 2000. Logging these variables
 brought the data closer to a linear model.</p>
+<p><img src="plot.png" /><!-- --></p>
 <p>After taking the disputed outlier (Palm Beach County) out of the
 dataset and logging the variables, the equation for predicting Buchanan
 votes from Bush votes per county was:</p>
@@ -392,6 +390,9 @@ Florida Counties. However, this analysis is limited by the assumption
 that the relationship between Buchanan and Bush votes in this county is
 the same as in others in Florida. Other confounding variables outside of
 ballot design could have affected this deviation.</p>
+</div>
+<div id="r-appendix" class="section level1">
+<h1>R Appendix</h1>
 <pre><code>##     County Buchanan2000 Bush2000
 ## 1  Alachua          262    34062
 ## 2    Baker           73     5610
@@ -399,6 +400,67 @@ ballot design could have affected this deviation.</p>
 ## 4 Bradford           65     5413
 ## 5  Brevard          570   115185
 ## 6  Broward          789   177279</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<p><img src="ElectionData_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre><code>## 
+## The downloaded binary packages are in
+##  /var/folders/0r/m7n19p454m9cnzzy_wczy7km0000gn/T//RtmphKV88F/downloaded_packages</code></pre>
+<p><img src="ElectionData_files/figure-html/unnamed-chunk-2-2.png" width="672" /><img src="ElectionData_files/figure-html/unnamed-chunk-2-3.png" width="672" /></p>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<p><img src="ElectionData_files/figure-html/unnamed-chunk-2-4.png" width="672" /><img src="ElectionData_files/figure-html/unnamed-chunk-2-5.png" width="672" /><img src="ElectionData_files/figure-html/unnamed-chunk-2-6.png" width="672" /></p>
+<pre><code>## [1] 67</code></pre>
+<pre><code>## [1] 67</code></pre>
+<pre><code>##        County Buchanan2000 Bush2000
+## 67 Palm Beach         3407   152846</code></pre>
+<pre class="r"><code>predict(ex0825_no_Palm_Beach_logged_lm,
+        newdata = data.frame(Bush2000 = 152846),
+        interval = &quot;prediction&quot;,
+        se.fit=T) #prediction for Palm Beach&#39;s Buchanan2000</code></pre>
+<pre><code>## $fit
+##        fit      lwr     upr
+## 1 6.384143 5.524656 7.24363
+## 
+## $se.fit
+## [1] 0.09416562
+## 
+## $df
+## [1] 64
+## 
+## $residual.scale
+## [1] 0.4198003</code></pre>
+<pre class="r"><code>se.pred &lt;- sqrt(0.4198003^2 + 0.09416562^2) #calculating the SE for prediction
+
+ex0825_pred &lt;- data.frame(ex0825_no_Palm_Beach,
+                          predict(ex0825_no_Palm_Beach_logged_lm, interval = &quot;prediction&quot;)) #creating prediction model</code></pre>
+<pre><code>## Warning in predict.lm(ex0825_no_Palm_Beach_logged_lm, interval = &quot;prediction&quot;): predictions on current data refer to _future_ responses</code></pre>
+<pre class="r"><code>head(ex0825_pred)</code></pre>
+<pre><code>##     County Buchanan2000 Bush2000      fit      lwr      upr
+## 1  Alachua          262    34062 5.286788 4.440368 6.133207
+## 2    Baker           73     5610 3.968401 3.119627 4.817176
+## 3      Bay          248    38637 5.378909 4.531913 6.225905
+## 4 Bradford           65     5413 3.942271 3.093250 4.791293
+## 5  Brevard          570   115185 6.177360 5.321359 7.033361
+## 6  Broward          789   177279 6.492540 5.631040 7.354041</code></pre>
+<pre><code>## `geom_smooth()` using formula = &#39;y ~ x&#39;</code></pre>
+<pre class="r"><code>summary(ex0825_no_Palm_Beach_logged_lm)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = log(Buchanan2000) ~ log(Bush2000), data = ex0825_no_Palm_Beach)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.95631 -0.21236  0.02503  0.28102  1.02056 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   -2.34149    0.35442  -6.607 9.07e-09 ***
+## log(Bush2000)  0.73096    0.03597  20.323  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.4198 on 64 degrees of freedom
+## Multiple R-squared:  0.8658, Adjusted R-squared:  0.8637 
+## F-statistic:   413 on 1 and 64 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 
 
