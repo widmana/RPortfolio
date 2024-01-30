@@ -8,12 +8,15 @@ output:
     number_sections: false
     toc_depth: 1
     #code_folding: hide
+    output_dir: ".../docs"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 # Introduction
+
+testing
 
 The 2000 US Presidential election of Al Gore versus George W. Bush was a very close competition, coming down to just a few hundred votes. The race came to a fraught and contentious end in the state of Florida, where the weight of America's future leadership fell upon heavily scrutinized county-level votes. In Palm Beach County, Democratic voters disputed ballot results, claiming that a confusing ballot design had caused voters to accidentally vote for Reform Party candidate Pat Buchanan instead of Gore. This report aims to analyze whether Buchanan received more votes than expected in Palm Beach County. We used data from all 67 counties in Florida in order to create a linear model of Bush votes versus Buchanan votes. We then created a 95% prediction interval to predict the number of Buchanan votes expected in Palm Beach County if no anomaly had occurred. 
 

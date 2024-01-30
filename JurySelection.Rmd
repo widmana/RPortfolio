@@ -8,6 +8,7 @@ output:
     number_sections: false
     toc_depth: 1
     #code_folding: hide
+    output_dir: ".../docs"
 ---
 
 ```{r setup, include=FALSE}
@@ -15,6 +16,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Introduction
+
+Testing
 
 Race's role in the court justice system is a long-standing point of controversy and discussion. In the case of Curtis Flowers the question of the role of race in jury selection is especially salient. Curtis Flowers was a black man tried for the murder of 4 people in 1996. The Montgomery County District Attorney, Doug Evans, brought Flowers to court six separate times, seeking the death penalty. Despite a series of verdicts and convictions, the Mississippi Supreme Court overturned the first, second, third, fourth, and fifth trials, citing prosecutorial misconduct due to racial bias by the prosecutor in jury selection. In 2010, Flowers was sentenced to death in his sixth trial. 
 

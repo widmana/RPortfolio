@@ -8,7 +8,6 @@ navbar:
       href: Projects.html
     - text: "Links"
       href: Links.html
-output_dir: "docs"
 pages:
     - text: "Jury Selection"
       href: "/docs/JurySelection.html"
@@ -19,3 +18,4 @@ pages:
     - text: "SVICOVID"
       href: "/docs/SVICOVID.html"
       navbar: false 
+output_dir: "docs"
