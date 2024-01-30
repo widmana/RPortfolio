@@ -9,3 +9,7 @@ navbar:
     - text: "Links"
       href: Links.html
 output_dir: "docs"
+pages:
+    - text: "Jury Selection"
+      href: "/docs/JurySelection.html"
+      navbar: false
