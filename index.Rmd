@@ -19,7 +19,7 @@ output: html_document
 
 # **My R Data Analytics Portfolio**
 
-This is a portfolio displaying my 
+This is a portfolio displaying some of the data analytics projects I've done!
 
 ## How to use
 

@@ -344,25 +344,248 @@ div.tocify {
 </div>
 
 
-<div id="r-markdown" class="section level2">
-<h2>R Markdown</h2>
-<p>testing</p>
-<pre class="r"><code>summary(cars)</code></pre>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Race’s role in the court justice system is a long-standing point of
+controversy and discussion. In the case of Curtis Flowers the question
+of the role of race in jury selection is especially salient. Curtis
+Flowers was a black man tried for the murder of 4 people in 1996. The
+Montgomery County District Attorney, Doug Evans, brought Flowers to
+court six separate times, seeking the death penalty. Despite a series of
+verdicts and convictions, the Mississippi Supreme Court overturned the
+first, second, third, fourth, and fifth trials, citing prosecutorial
+misconduct due to racial bias by the prosecutor in jury selection. In
+2010, Flowers was sentenced to death in his sixth trial.</p>
+<p>An analysis conducted by APM Methodologies long after Flowers’
+post-conviction investigation concluded that race played a significant
+role in whether a juror was removed by Mississippi prosecutor Doug
+Evans. In this study, we investigate whether the APM Methodology
+logistic model was sufficient and conclusion accurate. In effect, we are
+investigating whether or not there are racial disparities in the way
+that Evans used peremptory strikes. The data was collected by digitizing
+court documents related to jury selection including voir dires, venires,
+records of peremptory strikes, and the races of the jurors<a href="#fn1"
+class="footnote-ref" id="fnref1"><sup>1</sup></a>. We create a logistic
+model in which the response variable is whether the juror is struck or
+not, and the explanatory variables are whether the juror was accused of
+criminal activity (accused), is black (is_black), had family accused of
+criminal activity (fam_accused), has expressed hesitation with the death
+penalty (death_hesitation), knows the defendant (know_def), is the same
+race as the defendant (same_race), and has family in law enforcement
+(fame_law_enforcement). Using a slightly modified version of APM’s
+logistic model, we are able to conduct our own analysis and compare it
+to APM’s own analysis.</p>
 </div>
-<div id="including-plots" class="section level2">
-<h2>Including Plots</h2>
-<p>You can also embed plots, for example:</p>
-<p><img src="JurySelection_files/figure-html/pressure-1.png" width="672" /></p>
-<p>Note that the <code>echo = FALSE</code> parameter was added to the
-code chunk to prevent printing of the R code that generated the
-plot.</p>
+<div id="results" class="section level1">
+<h1>Results</h1>
+<p>Using the binary variable struck_state_bin (whether or not juror was
+struck) as the response variable and each of the original report’s 7
+variables, we created our logistic model. Part of this analysis is to
+investigate whether the original report’s model is sufficient. Figure 1
+shows the proportion of jurors that were struck by the state based on
+the race of the juror. This bar graph shows that there does seem to be a
+difference in the proportion of jurors that were struck by state based
+on race.</p>
+<p>After looking at box plots of each predictor vs. the residual values,
+we concluded that there are no transformations needed on the predictors.
+There were roughly the same number of points above and below the 0
+residual mark, so we can conclude that the linearity and constant
+variance assumptions are met. Looking at the Pearson residuals, leverage
+and Cook’s distance plot, we conclude that there are no individual cases
+that have a significant effect on our results. The four cases with the
+highest Cook’s distance had Cook’s distance values of around 0.03 which
+is not significant enough to remove them. Part of this report explores
+whether using the variable for defendant’s race (defendant_race) is a
+better predictor than using the variable that tracks whether the juror
+was the same race as the defendant (same_race). In order to do so, we
+created a drop-in-deviance test comparing models, each with the
+respective variable, to see which model has the lowest residual deviance
+(G2). We found that the variable tracking whether the juror was the same
+race as the defendant created the better model. We tested the data for
+interaction models by (1) creating boxplots comparing the odds of being
+struck by the state by race and each of the other six predictors, then
+(2) testing the potential interaction parameters that looked influential
+in (1) through drop-in-deviance tests. In step (1) we found that there
+could be a potential interaction between race and four of the predictors
+(accused, fam_accused, death_hesitation, and know_def). In step (2) we
+found that the predictors tracking the interaction between race and
+whether the juror has prior familiarity with the defendant (know_def),
+and race and whether the juror’s family/close friend was accused of
+being involved in criminal activity (fam_accused) had statistical
+significance. Our final model was:</p>
+<p><span
+class="math display">\[=−2.3265+1.7373isblack+2.5660accused+1.5726famaccused+1.8235deathhesitation+0.6865knowdef+\]</span>
+<span
+class="math display">\[0.3174samerace−0.5483famlawenforcement+1.1620isblack:knowdef+0.8118isblack:famaccused\]</span></p>
+<p>The parameters and standard errors for our model are:</p>
+<p><strong>EDIT</strong></p>
+</div>
+<div id="discussion" class="section level1">
+<h1>Discussion</h1>
+<p>In order to interpret the effect of race on odds of being stuck by
+the state based on our model, we would have to explore a linear
+combination of three predictors (the race predictor and the two
+interaction predictors). However, for the scope of this paper, we will
+just be analyzing the effect of the non-interaction race predictor on
+odds of being struck by the state. Based on this, we found that being
+Black is associated with a 468.2% increase in odds of being struck by
+the state (CI: 324.1% - 661.2%). Despite the powerful results, it is
+important to note the limitations of this dataset. Because this data was
+not collected under experimental conditions, we can only infer
+association, not causation.</p>
+</div>
+<div id="r-appendix" class="section level1">
+<h1>R Appendix</h1>
+<pre class="r"><code>#load packages and data
+library(ggplot2)
+library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(broom)
+library(ggResidpanel)
+apm &lt;- read.csv(&quot;http://math.carleton.edu/kstclair/data/APM_245report3.csv&quot;)
+head(apm)</code></pre>
+<pre><code>##   juror_id trial__id                     struck_by  race defendant_race accused
+## 1      107         3         Struck by the defense White          Black   FALSE
+## 2      108         3           Struck by the state Black          Black   FALSE
+## 3      109         3 Juror chosen to serve on jury Black          Black   FALSE
+## 4      110         3 Juror chosen to serve on jury Black          Black   FALSE
+## 5      111         3           Struck by the state White          Black    TRUE
+## 6      112         3           Struck by the state Black          Black   FALSE
+##   fam_accused know_def fam_law_enforcement death_hesitation
+## 1       FALSE    FALSE               FALSE            FALSE
+## 2        TRUE    FALSE               FALSE            FALSE
+## 3       FALSE    FALSE               FALSE            FALSE
+## 4       FALSE    FALSE                TRUE            FALSE
+## 5        TRUE    FALSE               FALSE            FALSE
+## 6        TRUE    FALSE               FALSE            FALSE
+##       strike_eligibility know_vic know_wit fam_crime_victim crime_victim
+## 1 Both State and Defense    FALSE    FALSE            FALSE        FALSE
+## 2                  State    FALSE    FALSE            FALSE         TRUE
+## 3 Both State and Defense    FALSE    FALSE            FALSE        FALSE
+## 4 Both State and Defense    FALSE    FALSE            FALSE        FALSE
+## 5                  State    FALSE    FALSE            FALSE        FALSE
+## 6                  State    FALSE    FALSE            FALSE        FALSE
+##   prior_info gender same_race struck_state_bin struck_state is_black
+## 1      FALSE   Male     FALSE                0    not_state    FALSE
+## 2      FALSE Female      TRUE                1        state     TRUE
+## 3      FALSE Female      TRUE                0    not_state     TRUE
+## 4      FALSE Female      TRUE                0    not_state     TRUE
+## 5      FALSE   Male     FALSE                1        state    FALSE
+## 6      FALSE Female      TRUE                1        state     TRUE</code></pre>
+<pre class="r"><code>#barplot
+#ggplot(apm, aes(x = race, y = add_count(race), fill = #stuck_state_bin))+
+  #geom_col(position = &quot;fill&quot;)
+
+#analysis step 1: verify that predictors in set (B) are not significant after accounting for the predictors in (A)
+apm_glm &lt;- glm(struck_state_bin ~ is_black + accused + fam_accused + death_hesitation + know_def + same_race + fam_law_enforcement + know_vic + know_wit + fam_crime_victim + crime_victim + prior_info + gender ,
+               family = binomial,
+               data = apm)
+summary(apm_glm)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = struck_state_bin ~ is_black + accused + fam_accused + 
+##     death_hesitation + know_def + same_race + fam_law_enforcement + 
+##     know_vic + know_wit + fam_crime_victim + crime_victim + prior_info + 
+##     gender, family = binomial, data = apm)
+## 
+## Coefficients:
+##                          Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)             -2.449611   0.120825 -20.274  &lt; 2e-16 ***
+## is_blackTRUE             1.896292   0.143144  13.247  &lt; 2e-16 ***
+## accusedTRUE              2.539562   0.545295   4.657 3.21e-06 ***
+## fam_accusedTRUE          1.860810   0.164490  11.313  &lt; 2e-16 ***
+## death_hesitationTRUE     1.893782   0.595388   3.181 0.001469 ** 
+## know_defTRUE             1.355257   0.229931   5.894 3.77e-09 ***
+## same_raceTRUE            0.374871   0.140993   2.659 0.007842 ** 
+## fam_law_enforcementTRUE -0.581547   0.164103  -3.544 0.000394 ***
+## know_vicTRUE             0.293692   0.237816   1.235 0.216846    
+## know_witTRUE            -0.286390   0.231691  -1.236 0.216426    
+## fam_crime_victimTRUE     0.541522   0.274917   1.970 0.048865 *  
+## crime_victimTRUE         0.009626   0.310544   0.031 0.975272    
+## prior_infoTRUE          -0.183799   0.194147  -0.947 0.343793    
+## genderMale               0.017205   0.121666   0.141 0.887545    
+## genderUnknown            0.022099   0.369050   0.060 0.952251    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 2579.5  on 2294  degrees of freedom
+## Residual deviance: 1880.7  on 2280  degrees of freedom
+## AIC: 1910.7
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+<pre class="r"><code>  #confirms findings
+
+#analysis Step 2: match the coefficients table and odds ratio table on page 10 of the Methodology report
+  #parameters &amp; CI
+apm1_glm &lt;- glm(struck_state_bin ~ is_black + accused + fam_accused + death_hesitation + know_def + same_race + fam_law_enforcement ,
+               family = binomial,
+               data = apm)
+tidy(apm1_glm, conf.int=TRUE) </code></pre>
+<pre><code>## # A tibble: 8 × 7
+##   term                 estimate std.error statistic   p.value conf.low conf.high
+##   &lt;chr&gt;                   &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)            -2.43      0.101    -24.0  1.87e-127  -2.63      -2.24 
+## 2 is_blackTRUE            1.90      0.141     13.4  3.39e- 41   1.62       2.18 
+## 3 accusedTRUE             2.51      0.545      4.61 4.10e-  6   1.52       3.69 
+## 4 fam_accusedTRUE         1.85      0.162     11.4  4.07e- 30   1.53       2.17 
+## 5 death_hesitationTRUE    1.82      0.592      3.08 2.04e-  3   0.702      3.04 
+## 6 know_defTRUE            1.33      0.223      5.94 2.91e-  9   0.891      1.77 
+## 7 same_raceTRUE           0.360     0.140      2.57 1.00e-  2   0.0845     0.633
+## 8 fam_law_enforcement…   -0.563     0.162     -3.47 5.24e-  4  -0.887     -0.250</code></pre>
+<pre class="r"><code>#odds Ratios &amp; CIs
+#(i; is_black)
+exp(1.8971633)</code></pre>
+<pre><code>## [1] 6.666955</code></pre>
+<pre class="r"><code>exp(1.8971633   + c(-1,1)*qnorm(0.975)*0.1411286)</code></pre>
+<pre><code>## [1] 5.055902 8.791367</code></pre>
+<pre class="r"><code>#(ii; accusedTRUE
+exp(2.5127795)</code></pre>
+<pre><code>## [1] 12.33918</code></pre>
+<pre class="r"><code>exp(2.5127795 + c(-1,1)*qnorm(0.975)*0.5454876)</code></pre>
+<pre><code>## [1]  4.236102 35.942324</code></pre>
+<pre class="r"><code>#(iii; fam_accusedTRUE)
+exp(1.8475979)</code></pre>
+<pre><code>## [1] 6.344561</code></pre>
+<pre class="r"><code>exp(1.8475979 + c(-1,1)*qnorm(0.975)*0.1620352)</code></pre>
+<pre><code>## [1] 4.618245 8.716180</code></pre>
+<pre class="r"><code>#(iv; death_hesitationTRUE)
+exp(1.8243438)</code></pre>
+<pre><code>## [1] 6.198726</code></pre>
+<pre class="r"><code>exp(1.8243438 + c(-1,1)*qnorm(0.975)*0.5915993)</code></pre>
+<pre><code>## [1]  1.944161 19.763902</code></pre>
+<pre class="r"><code>#(v; know_defTRUE)
+exp(1.3256965)</code></pre>
+<pre><code>## [1] 3.764807</code></pre>
+<pre class="r"><code>exp(1.3256965 + c(-1,1)*qnorm(0.975)*0.2233026)</code></pre>
+<pre><code>## [1] 2.430341 5.832009</code></pre>
+<pre class="r"><code>#(vi; same_raceTRUE)
+exp(0.3602561)</code></pre>
+<pre><code>## [1] 1.433697</code></pre>
+<pre class="r"><code>exp(0.3602561 + c(-1,1)*qnorm(0.975)*0.1399283)</code></pre>
+<pre><code>## [1] 1.089808 1.886099</code></pre>
+<pre class="r"><code>#(vii; fam_law_enforcementTRUE)
+exp(-0.5626784)</code></pre>
+<pre><code>## [1] 0.5696812</code></pre>
+<pre class="r"><code>exp(-0.5626784 + c(-1,1)*qnorm(0.975)*0.1622335)</code></pre>
+<pre><code>## [1] 0.4145133 0.7829342</code></pre>
+<pre class="r"><code># Odds ratios and CIs are the same</code></pre>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p>Data taken from Craft, Will. “Mississippi D.A. Doug
+Evans Has A Long History of Striking Black People from Juries.”<a
+href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 
 

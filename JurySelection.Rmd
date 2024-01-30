@@ -14,18 +14,91 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-testing
-```{r cars}
-summary(cars)
-```
+# Introduction
 
-## Including Plots
+Race's role in the court justice system is a long-standing point of controversy and discussion. In the case of Curtis Flowers the question of the role of race in jury selection is especially salient. Curtis Flowers was a black man tried for the murder of 4 people in 1996. The Montgomery County District Attorney, Doug Evans, brought Flowers to court six separate times, seeking the death penalty. Despite a series of verdicts and convictions, the Mississippi Supreme Court overturned the first, second, third, fourth, and fifth trials, citing prosecutorial misconduct due to racial bias by the prosecutor in jury selection. In 2010, Flowers was sentenced to death in his sixth trial. 
 
-You can also embed plots, for example:
+An analysis conducted by APM Methodologies long after Flowers' post-conviction investigation concluded that race played a significant role in whether a juror was removed by Mississippi prosecutor Doug Evans. In this study, we investigate whether the APM Methodology logistic model was sufficient and conclusion accurate. In effect, we are investigating whether or not there are racial disparities in the way that Evans used peremptory strikes. The data was collected by digitizing court documents related to jury selection including voir dires, venires, records of peremptory strikes, and the races of the jurors[^1]. We create a logistic model in which the response variable is whether the juror is struck or not, and the explanatory variables are whether the juror was accused of criminal activity (accused), is black (is_black), had family accused of criminal activity (fam_accused), has expressed hesitation with the death penalty (death_hesitation), knows the defendant (know_def), is the same race as the defendant (same_race), and has family in law enforcement (fame_law_enforcement). Using a slightly modified version of APM’s logistic model, we are able to conduct our own analysis and compare it to APM’s own analysis.
+
+[^1]: Data taken from Craft, Will. “Mississippi D.A. Doug Evans Has A Long History of Striking Black People from Juries.”
+
+# Results
+
+Using the binary variable struck_state_bin (whether or not juror was struck) as the response variable and each of the original report’s 7 variables, we created our logistic model. Part of this analysis is to investigate whether the original report’s model is sufficient. Figure 1 shows the proportion of jurors that were struck by the state based on the race of the juror. This bar graph shows that there does seem to be a difference in the proportion of jurors that were struck by state based on race.
 
 ```{r pressure, echo=FALSE}
-plot(pressure)
+#edit
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+After looking at box plots of each predictor vs. the residual values, we concluded that there are no transformations needed on the predictors. There were roughly the same number of points above and below the 0 residual mark, so we can conclude that the linearity and constant variance assumptions are met. Looking at the Pearson residuals, leverage and Cook’s distance plot, we conclude that there are no individual cases that have a significant effect on our results. The four cases with the highest Cook’s distance had Cook’s distance values of around 0.03 which is not significant enough to remove them. Part of this report explores whether using the variable for defendant’s race (defendant_race) is a better predictor than using the variable that tracks whether the juror was the same race as the defendant (same_race). In order to do so, we created a drop-in-deviance test comparing models, each with the respective variable, to see which model has the lowest residual deviance (G2). We found that the variable tracking whether the juror was the same race as the defendant created the better model. We tested the data for interaction models by (1) creating boxplots comparing the odds of being struck by the state by race and each of the other six predictors, then (2) testing the potential interaction parameters that looked influential in (1) through drop-in-deviance tests. In step (1) we found that there could be a potential interaction between race and four of the predictors (accused, fam_accused, death_hesitation, and know_def). In step (2) we found that the predictors tracking the interaction between race and whether the juror has prior familiarity with the defendant (know_def), and race and whether the juror’s family/close friend was accused of being involved in criminal activity (fam_accused) had statistical significance. Our final model was:
+
+$$=−2.3265+1.7373isblack+2.5660accused+1.5726famaccused+1.8235deathhesitation+0.6865knowdef+$$
+$$0.3174samerace−0.5483famlawenforcement+1.1620isblack:knowdef+0.8118isblack:famaccused$$
+
+The parameters and standard errors for our model are:
+
+**EDIT**
+
+# Discussion
+
+In order to interpret the effect of race on odds of being stuck by the state based on our model, we would have to explore a linear combination of three predictors (the race predictor and the two interaction predictors). However, for the scope of this paper, we will just be analyzing the effect of the non-interaction race predictor on odds of being struck by the state. Based on this, we found that being Black is associated with a 468.2% increase in odds of being struck by the state (CI: 324.1% - 661.2%). Despite the powerful results, it is important to note the limitations of this dataset. Because this data was not collected under experimental conditions, we can only infer association, not causation.
+
+# R Appendix
+
+```{r cars}
+#load packages and data
+library(ggplot2)
+library(dplyr)
+library(broom)
+library(ggResidpanel)
+apm <- read.csv("http://math.carleton.edu/kstclair/data/APM_245report3.csv")
+head(apm)
+
+#barplot
+#ggplot(apm, aes(x = race, y = add_count(race), fill = #stuck_state_bin))+
+  #geom_col(position = "fill")
+
+#analysis step 1: verify that predictors in set (B) are not significant after accounting for the predictors in (A)
+apm_glm <- glm(struck_state_bin ~ is_black + accused + fam_accused + death_hesitation + know_def + same_race + fam_law_enforcement + know_vic + know_wit + fam_crime_victim + crime_victim + prior_info + gender ,
+               family = binomial,
+               data = apm)
+summary(apm_glm)
+  #confirms findings
+
+#analysis Step 2: match the coefficients table and odds ratio table on page 10 of the Methodology report
+  #parameters & CI
+apm1_glm <- glm(struck_state_bin ~ is_black + accused + fam_accused + death_hesitation + know_def + same_race + fam_law_enforcement ,
+               family = binomial,
+               data = apm)
+tidy(apm1_glm, conf.int=TRUE) 
+
+#odds Ratios & CIs
+#(i; is_black)
+exp(1.8971633)
+exp(1.8971633   + c(-1,1)*qnorm(0.975)*0.1411286)
+#(ii; accusedTRUE
+exp(2.5127795)
+exp(2.5127795 + c(-1,1)*qnorm(0.975)*0.5454876)
+#(iii; fam_accusedTRUE)
+exp(1.8475979)
+exp(1.8475979 + c(-1,1)*qnorm(0.975)*0.1620352)
+#(iv; death_hesitationTRUE)
+exp(1.8243438)
+exp(1.8243438 + c(-1,1)*qnorm(0.975)*0.5915993)
+#(v; know_defTRUE)
+exp(1.3256965)
+exp(1.3256965 + c(-1,1)*qnorm(0.975)*0.2233026)
+#(vi; same_raceTRUE)
+exp(0.3602561)
+exp(0.3602561 + c(-1,1)*qnorm(0.975)*0.1399283)
+#(vii; fam_law_enforcementTRUE)
+exp(-0.5626784)
+exp(-0.5626784 + c(-1,1)*qnorm(0.975)*0.1622335)
+# Odds ratios and CIs are the same
+
+
+```
+
+
+
+
