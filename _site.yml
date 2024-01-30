@@ -6,8 +6,6 @@ navbar:
       href: index.html
     - text: "Projects"
       href: Projects.html
-    - text: "Links"
-      href: Links.html
 pages:
     - text: "Jury Selection"
       href: "/docs/JurySelection.html"
