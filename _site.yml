@@ -13,3 +13,6 @@ pages:
     - text: "Jury Selection"
       href: "/docs/JurySelection.html"
       navbar: false
+    - text: "Election Data"
+      href: "/docs/ElectionData.html"
+      navbar: false
